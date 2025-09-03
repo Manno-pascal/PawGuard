@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
@@ -30,6 +32,17 @@ class Pet
     #[ORM\ManyToOne(inversedBy: 'pets')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
+
+    /**
+     * @var Collection<int, VaccinationRecord>
+     */
+    #[ORM\OneToMany(targetEntity: VaccinationRecord::class, mappedBy: 'pet', orphanRemoval: true)]
+    private Collection $vaccinationRecords;
+
+    public function __construct()
+    {
+        $this->vaccinationRecords = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -92,6 +105,36 @@ class Pet
     public function setOwner(?User $owner): static
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VaccinationRecord>
+     */
+    public function getVaccinationRecords(): Collection
+    {
+        return $this->vaccinationRecords;
+    }
+
+    public function addVaccinationRecord(VaccinationRecord $vaccinationRecord): static
+    {
+        if (!$this->vaccinationRecords->contains($vaccinationRecord)) {
+            $this->vaccinationRecords->add($vaccinationRecord);
+            $vaccinationRecord->setPet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVaccinationRecord(VaccinationRecord $vaccinationRecord): static
+    {
+        if ($this->vaccinationRecords->removeElement($vaccinationRecord)) {
+            // set the owning side to null (unless already changed)
+            if ($vaccinationRecord->getPet() === $this) {
+                $vaccinationRecord->setPet(null);
+            }
+        }
 
         return $this;
     }
