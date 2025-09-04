@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\CreatedAtTrait;
+use App\Entity\Trait\UpdatedAtTrait;
 use App\Repository\VaccinationRecordRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: VaccinationRecordRepository::class)]
 #[Broadcast]
+#[ORM\HasLifecycleCallbacks]
 class VaccinationRecord
 {
+    use CreatedAtTrait;
+    use UpdatedAtTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
