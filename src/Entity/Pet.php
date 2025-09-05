@@ -44,9 +44,16 @@ class Pet
     #[ORM\OneToMany(targetEntity: VaccinationRecord::class, mappedBy: 'pet', orphanRemoval: true)]
     private Collection $vaccinationRecords;
 
+    /**
+     * @var Collection<int, PetProduct>
+     */
+    #[ORM\OneToMany(targetEntity: PetProduct::class, mappedBy: 'pet', orphanRemoval: true)]
+    private Collection $petProducts;
+
     public function __construct()
     {
         $this->vaccinationRecords = new ArrayCollection();
+        $this->petProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -138,6 +145,36 @@ class Pet
             // set the owning side to null (unless already changed)
             if ($vaccinationRecord->getPet() === $this) {
                 $vaccinationRecord->setPet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PetProduct>
+     */
+    public function getPetProducts(): Collection
+    {
+        return $this->petProducts;
+    }
+
+    public function addPetProduct(PetProduct $petProduct): static
+    {
+        if (!$this->petProducts->contains($petProduct)) {
+            $this->petProducts->add($petProduct);
+            $petProduct->setPet($this);
+        }
+
+        return $this;
+    }
+
+    public function removePetProduct(PetProduct $petProduct): static
+    {
+        if ($this->petProducts->removeElement($petProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($petProduct->getPet() === $this) {
+                $petProduct->setPet(null);
             }
         }
 
