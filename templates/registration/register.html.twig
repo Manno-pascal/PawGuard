@@ -2,18 +2,51 @@
 
 {% block title %}Register{% endblock %}
 
+{# {% block body %} #}
+{#    <h1>Register</h1> #}
+
+{#    {{ form_errors(registrationForm) }} #}
+
+{#    {{ form_start(registrationForm) }} #}
+{#        {{ form_row(registrationForm.email) }} #}
+{#        {{ form_row(registrationForm.plainPassword, { #}
+{#            label: 'Password' #}
+{#        }) }} #}
+{#        {{ form_row(registrationForm.agreeTerms) }} #}
+
+{#        <button type="submit" class="btn">Register</button> #}
+{#    {{ form_end(registrationForm) }} #}
+{# {% endblock %} #}
 {% block body %}
-    <h1>Register</h1>
+    <div class="d-flex justify-content-center align-items-center">
+        {% if form_errors(registrationForm) %}
+            <div class="alert alert-danger">{{ form_errors(registrationForm) }}</div>
+        {% endif %}
 
-    {{ form_errors(registrationForm) }}
+        {{ form_start(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        <div class="form-container mt-5 ">
+            <h3 contenteditable="true" spellcheck="false" class="">S'enregistrer</h3>
+            <div class="form-floating mb-3">
+                {{ form_widget(registrationForm.email) }}
+                {{ form_label(registrationForm.email) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+            <div class="form-floating mb-3">
+                {{ form_widget(registrationForm.plainPassword) }}
+                {{ form_label(registrationForm.plainPassword) }}
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+            <div class="checkbox mb-3">
+                {{ form_widget(registrationForm.agreeTerms) }}
+                {{ form_label(registrationForm.agreeTerms) }}
+                {{ form_errors(registrationForm.agreeTerms) }}
+            </div>
+            <div>
+                <button type="submit" class="btn-submit">S'enregistrer</button>
+            </div>
+        </div>
+        {{ form_end(registrationForm) }}
+    </div>
 {% endblock %}
+

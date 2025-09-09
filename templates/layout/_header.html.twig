@@ -8,7 +8,7 @@
 
             <h1 class="sitename">PawGuard</h1>
         </a>
-
+        {% if app.user %}
         <nav id="navmenu" class="navmenu" data-builder="navmenu" data-js=" mobile-nav-toggle mobile-nav-dropdown">
             <ul>
                 <li><a href="" class="active">Home</a></li>
@@ -50,8 +50,8 @@
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
-
-        <a class="btn-getstarted" href="">Appointment</a>
+        {% endif %}
+        <a class="btn-getstarted" href="{{ path('app_login') }}">Se connecter</a>
 
     </div>
 </header>
